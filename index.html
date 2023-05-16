@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Touch Coordinates</title>
+    <title>Mouse and Touch Coordinates</title>
     <style>
         #coordinates {
             position: fixed;
@@ -16,19 +16,28 @@
     </style>
 </head>
 <body>
-    <div id="coordinates">Touch coordinates: X=0, Y=0</div>
+    <div id="coordinates">Coordinates: X=0, Y=0</div>
     <script>
+        // Function to get mouse coordinates and output them to the console and screen
+        function logMouseCoordinates(event) {
+            var x = event.clientX;
+            var y = event.clientY;
+            console.log("Mouse coordinates: X=" + x + ", Y=" + y);
+            document.getElementById("coordinates").textContent = "Coordinates: X=" + x + ", Y=" + y;
+        }
+
         // Function to get touch coordinates and output them to the console and screen
         function logTouchCoordinates(event) {
             var touch = event.touches[0];
             var x = touch.clientX;
             var y = touch.clientY;
             console.log("Touch coordinates: X=" + x + ", Y=" + y);
-            document.getElementById("coordinates").textContent = "Touch coordinates: X=" + x + ", Y=" + y;
+            document.getElementById("coordinates").textContent = "Coordinates: X=" + x + ", Y=" + y;
         }
 
-        // Add the touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
+        // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("mousemove", logMouseCoordinates);
             document.addEventListener("touchstart", logTouchCoordinates);
             document.addEventListener("touchmove", logTouchCoordinates);
             document.addEventListener("touchend", logTouchCoordinates);
