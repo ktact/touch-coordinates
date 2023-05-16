@@ -4,20 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Touch Coordinates</title>
+    <style>
+        #coordinates {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
+    <div id="coordinates">Touch coordinates: X=0, Y=0</div>
     <script>
-        // Function to get touch coordinates and output them to the console
+        // Function to get touch coordinates and output them to the console and screen
         function logTouchCoordinates(event) {
             var touch = event.touches[0];
-            console.log("Touch coordinates: X=" + touch.clientX + ", Y=" + touch.clientY);
+            var x = touch.clientX;
+            var y = touch.clientY;
+            console.log("Touch coordinates: X=" + x + ", Y=" + y);
+            document.getElementById("coordinates").textContent = "Touch coordinates: X=" + x + ", Y=" + y;
         }
 
         // Add the touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
-            document.addEventListener("touchstart",  logTouchCoordinates);
-            document.addEventListener("touchmove",   logTouchCoordinates);
-            document.addEventListener("touchend",    logTouchCoordinates);
+            document.addEventListener("touchstart", logTouchCoordinates);
+            document.addEventListener("touchmove", logTouchCoordinates);
+            document.addEventListener("touchend", logTouchCoordinates);
             document.addEventListener("touchcancel", logTouchCoordinates);
         });
     </script>
