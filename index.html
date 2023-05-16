@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch Coordinates</title>
+</head>
+<body>
+    <script>
+        // Function to get touch coordinates and output them to the console
+        function logTouchCoordinates(event) {
+            var touch = event.touches[0];
+            console.log("Touch coordinates: X=" + touch.clientX + ", Y=" + touch.clientY);
+        }
+
+        // Add the touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
+        window.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("touchstart",  logTouchCoordinates);
+            document.addEventListener("touchmove",   logTouchCoordinates);
+            document.addEventListener("touchend",    logTouchCoordinates);
+            document.addEventListener("touchcancel", logTouchCoordinates);
+        });
+    </script>
+</body>
+</html>
