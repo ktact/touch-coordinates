@@ -50,14 +50,9 @@
             let idArr   = [];
             let slotArr = [];
 
-            if (eventType == 'moues') {
+            if (eventType == 'mouse') {
                 xArr.push(e.offsetX);
                 yArr.push(e.offsetY);
-
-                let thisId = -1;
-                if (eventType == 'point') {
-                  thisId = e.pointerId;
-                }
 
                 slotArr.push(0);
                 idArr.push(thisId);
