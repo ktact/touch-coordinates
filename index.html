@@ -58,8 +58,17 @@
                 changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
             });
 
+            /*
             mouseEvent.target.dispatchEvent(simulatedTouchEvent);
             mouseEvent.preventDefault();
+            */
+            if (touchEventType == 'touchstart') {
+                onStartDrag(simulatedTouchEvent);
+            } else if (touchEventType == 'touchmove') {
+                onContinueDrag(simulatedTouchEvent);
+            } else if (touchEventType == 'touchend') {
+                onEndDrag(simulatedTouchEvent);
+            }
         }
         
         function sendEvent(context, e) {
