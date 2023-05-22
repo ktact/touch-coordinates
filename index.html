@@ -25,11 +25,7 @@
               'mouseup':   'touchend'
           };
 
-          const touchEvent = new TouchEvent(touchType[event.type], {
-              bubbles: true,
-              cancelable: true,
-              composed: true,
-              touches: [new Touch({
+          const touch = new Touch({
                 identifier: 0,
                 target: event.target,
                 screenX: event.screenX,
@@ -42,7 +38,15 @@
                 radiusY: 0,
                 rotationAngle: 0,
                 force: 1
-              })]
+              });
+
+          const touchEvent = new TouchEvent(touchType[event.type], {
+              bubbles: true,
+              cancelable: true,
+              composed: true,
+              touches: [touch],
+              targetTouches: [touch],
+              changedTouches: [touch]
           });
 
           //event.target.dispatchEvent(touchEvent);
@@ -103,7 +107,8 @@
                 idArr.push(-1);
             } else if (eventType == 'touch') {
                 let changes = e.changedTouches;
-                let rect = changes[0].rect; // e.target.getBoundingClientRect()
+                console.log(changes);
+                let rect = e.target.getBoundingClientRect()
                 for (let i = 0; i < changes.length; i++) {
                     xArr.push(changes[i].pageX - rect.left);
                     yArr.push(changes[i].pageY - rect.top);
