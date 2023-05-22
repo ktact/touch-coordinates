@@ -109,7 +109,7 @@
                 yArr[i] = Math.trunc(yArr[i] * scaling);
             }
             
-            console.log({ idArr, xArr, yArr, down: context.down, slotArr });
+            document.getElementById("coordinates").textContent = JSON.stringify({ idArr, xArr, yArr, down: context.down, slotArr });
         }
 
         // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
