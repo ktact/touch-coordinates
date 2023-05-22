@@ -50,7 +50,18 @@
             let idArr   = [];
             let slotArr = [];
 
-            if (eventType == 'touch') {
+            if (eventType == 'moues') {
+                xArr.push(e.offsetX);
+                yArr.push(e.offsetY);
+
+                let thisId = -1;
+                if (eventType == 'point') {
+                  thisId = e.pointerId;
+                }
+
+                slotArr.push(0);
+                idArr.push(thisId);
+            } else if (eventType == 'touch') {
                 let changes = e.changedTouches;
                 let rect = e.target.getBoundingClientRect();
                 for (let i = 0; i < changes.length; i++) {
