@@ -18,70 +18,6 @@
 <body>
     <div id="console"></div>
     <script>
-    var utils;
-        (function (utils) {
-            var TouchManager = (function () {
-                function TouchManager() {
-                    this.isSupportedTouch = false;
-                    this.isSupportedTouch = ('ontouchstart' in window);
-                }
-
-                TouchManager.prototype.disableTouch = function () {
-                    if (this.isSupportedTouch) {
-                        document.body.addEventListener('touchmove', function (event) {
-                            event.preventDefault();
-                        }, false);
-                    }
-                };
-
-                TouchManager.prototype.addListener = function (element) {
-                    var _this = this;
-                    element.addEventListener("touchstart", function (event) {
-                        _this.handleTouch(event);
-                    }, true);
-                    element.addEventListener("touchmove", function (event) {
-                        _this.handleTouch(event);
-                    }, true);
-                    element.addEventListener("touchend", function (event) {
-                        _this.handleTouch(event);
-                    }, true);
-                    element.addEventListener("touchcancel", function (event) {
-                        _this.handleTouch(event);
-                    }, true);
-                };
-
-                TouchManager.prototype.handleTouch = function (event) {
-                    var touches = event.changedTouches, touch = touches[0], type = "";
-                    switch (event.type) {
-                        case "touchstart":
-                            type = "mousedown";
-                            break;
-                        case "touchmove":
-                            type = "mousemove";
-                            break;
-                        case "touchend":
-                            type = "mouseup";
-                            break;
-                        default:
-                            return;
-                    }
-
-                    var simulatedEvent = document.createEvent("MouseEvent");
-
-                    simulatedEvent.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
-                    console.log(simulatedEvent);
-                    touch.target.dispatchEvent(simulatedEvent);
-                    event.preventDefault();
-                };
-                return TouchManager;
-            })();
-            utils.TouchManager = TouchManager;
-        })(utils || (utils = {}));
-
-        var touchManager = new utils.TouchManager();
-        touchManager.disableTouch();
-        touchManager.addListener(document.body);
-
         let context = {
             down: false,
             touchIdSlotMap: new Map(),
@@ -190,7 +126,9 @@
         // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
             if (window.MouseEvent) {
-                
+                document.addEventListener("mousedown", onStartDrag);
+                document.addEventListener("mousemove",  onContinueDrag);
+                document.addEventListener("mouseup",   onEndDrag);
             } else if (window.TouchEvent) {
                 document.addEventListener("touchstart", onStartDrag);
                 document.addEventListener("touchmove",  onContinueDrag);
