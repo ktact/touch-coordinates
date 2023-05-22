@@ -88,22 +88,19 @@
         }
 
         function onStartDrag(e) {
-            e.preventDefault();
-
+            console.log("onStartDrag");
             context.down = true;
             sendEvent(context, e);
         }
 
         function onEndDrag(e) {
-            e.preventDefault();
-
+            console.log("onEndDrag");
             context.down = false;
             sendEvent(context, e);
         }
 
         function onContinueDrag(e) {
-            e.preventDefault();
-
+            console.log("onContinueDrag");
             if (context.down) {
                 sendEvent(context, e);
             }
