@@ -51,11 +51,10 @@
 
         function simulateTouchEvent(mouseEvent, touchEventType) {
             const touchEvent = new TouchEvent(touchEventType, {
-                type: touchEventType,
                 bubbles: true,
                 cancelable: true,
                 composed: true,
-                changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
+                changedTouchs: [new Touch(touchEventType, { identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
             });
 
             mouseEvent.target.dispatchEvent(touchEvent);
