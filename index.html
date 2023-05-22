@@ -25,16 +25,22 @@
         }
 
         function onStartDrag(e) {
+            e.preventDefault();
+
             context.down = true;
             sendEvent(context, e);
         }
 
         function onEndDrag(e) {
+            e.preventDefault();
+
             context.down = false;
             sendEvent(context, e);
         }
 
         function onContinueDrag(e) {
+            e.preventDefault();
+
             if (context.down) {
                 sendEvent(context, e);
             }
