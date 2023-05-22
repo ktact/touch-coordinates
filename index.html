@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-    <div id="coordinates">Coordinates: X=0, Y=0</div>
+    <div id="console"></div>
     <script>
         let context = {
             down: false,
@@ -55,7 +55,7 @@
                 yArr.push(e.offsetY);
 
                 slotArr.push(0);
-                idArr.push(thisId);
+                idArr.push(-1);
             } else if (eventType == 'touch') {
                 let changes = e.changedTouches;
                 let rect = e.target.getBoundingClientRect();
@@ -115,7 +115,7 @@
                 yArr[i] = Math.trunc(yArr[i] * scaling);
             }
             
-            document.getElementById("coordinates").textContent = JSON.stringify({ idArr, xArr, yArr, down: context.down, slotArr });
+            document.getElementById("console").textContent = JSON.stringify({ idArr, xArr, yArr, down: context.down, slotArr });
             console.log({ idArr, xArr, yArr, down: context.down, slotArr });
         }
 
