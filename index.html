@@ -18,6 +18,69 @@
 <body>
     <div id="console"></div>
     <script>
+    var utils;
+        (function (utils) {
+            var TouchManager = (function () {
+                function TouchManager() {
+                    this.isSupportedTouch = false;
+                    this.isSupportedTouch = ('ontouchstart' in window);
+                }
+
+                TouchManager.prototype.disableTouch = function () {
+                    if (this.isSupportedTouch) {
+                        document.body.addEventListener('touchmove', function (event) {
+                            event.preventDefault();
+                        }, false);
+                    }
+                };
+
+                TouchManager.prototype.addListener = function (element) {
+                    var _this = this;
+                    element.addEventListener("touchstart", function (event) {
+                        _this.handleTouch(event);
+                    }, true);
+                    element.addEventListener("touchmove", function (event) {
+                        _this.handleTouch(event);
+                    }, true);
+                    element.addEventListener("touchend", function (event) {
+                        _this.handleTouch(event);
+                    }, true);
+                    element.addEventListener("touchcancel", function (event) {
+                        _this.handleTouch(event);
+                    }, true);
+                };
+
+                TouchManager.prototype.handleTouch = function (event) {
+                    var touches = event.changedTouches, touch = touches[0], type = "";
+                    switch (event.type) {
+                        case "touchstart":
+                            type = "mousedown";
+                            break;
+                        case "touchmove":
+                            type = "mousemove";
+                            break;
+                        case "touchend":
+                            type = "mouseup";
+                            break;
+                        default:
+                            return;
+                    }
+
+                    var simulatedEvent = document.createEvent("MouseEvent");
+
+                    simulatedEvent.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+                    touch.target.dispatchEvent(simulatedEvent);
+                    event.preventDefault();
+                };
+                return TouchManager;
+            })();
+            utils.TouchManager = TouchManager;
+        })(utils || (utils = {}));
+
+        var touchManager = new utils.TouchManager();
+        touchManager.disableTouch();
+        touchManager.addListener(document.body);
+
         let context = {
             down: false,
             touchIdSlotMap: new Map(),
@@ -25,7 +88,6 @@
         }
 
         function onStartDrag(e) {
-            if (!e.target) return;
             e.preventDefault();
 
             context.down = true;
@@ -33,7 +95,6 @@
         }
 
         function onEndDrag(e) {
-            if (!e.target) return;
             e.preventDefault();
 
             context.down = false;
@@ -41,7 +102,6 @@
         }
 
         function onContinueDrag(e) {
-            if (!e.target) return;
             e.preventDefault();
 
             if (context.down) {
@@ -49,48 +109,6 @@
             }
         }
 
-        function simulateTouchEvent(mouseEvent, touchEventType) {
-            const touch = new Touch({
-                    identifier: 0,
-                    target: mouseEvent.target,
-                    screenX: mouseEvent.screenX,
-                    screenY: mouseEvent.screenY,
-                    clientX: mouseEvent.clientX,
-                    clientY: mouseEvent.clientY,
-                    pageX: mouseEvent.pageX,
-                    pageY: mouseEvent.pageY,
-                    radiusX: 2.5,
-                    radiusY: 2.5,
-                    rotationAngle: 0,
-                    force: 0.5
-                });
-
-            const simulatedTouchEvent = new TouchEvent(touchEventType, {
-                bubbles: true,
-                cancelable: true,
-                composed: true,
-                detail: 1,
-                targetTouches: [touch],
-                changedTouches: [touch],
-                altKey: false,
-                metaKey: false,
-                ctrlKey: false,
-                shiftKey: false
-            });
-
-            /*
-            mouseEvent.target.dispatchEvent(simulatedTouchEvent);
-            mouseEvent.preventDefault();
-            */
-            if (touchEventType == 'touchstart') {
-                onStartDrag(simulatedTouchEvent);
-            } else if (touchEventType == 'touchmove') {
-                onContinueDrag(simulatedTouchEvent);
-            } else if (touchEventType == 'touchend') {
-                onEndDrag(simulatedTouchEvent);
-            }
-        }
-        
         function sendEvent(context, e) {
             console.log("sendEvent");
             let eventType = e.type.substring(0, 5);
