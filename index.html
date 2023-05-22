@@ -45,7 +45,7 @@
               })]
           });
 
-          element.dispatchEvent(touchEvent);
+          event.target.dispatchEvent(touchEvent);
           event.preventDefault();
         };
         let context = {
