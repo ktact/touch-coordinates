@@ -25,7 +25,7 @@
         }
 
         function onStartDrag(e) {
-            console.log("onStartDrag");
+            if (!e.target) return;
             e.preventDefault();
 
             context.down = true;
@@ -33,7 +33,7 @@
         }
 
         function onEndDrag(e) {
-            console.log("onEndDrag");
+            if (!e.target) return;
             e.preventDefault();
 
             context.down = false;
@@ -41,7 +41,7 @@
         }
 
         function onContinueDrag(e) {
-            console.log("onContinueDrag");
+            if (!e.target) return;
             e.preventDefault();
 
             if (context.down) {
