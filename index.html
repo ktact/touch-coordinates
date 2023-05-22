@@ -55,7 +55,20 @@
                 cancelable: true,
                 composed: true,
                 detail: 1,
-                changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
+                changedTouchs: [new Touch({
+                    identifier: 0,
+                    target: mouseEvent.target,
+                    screenX: mouseEvent.screenX,
+                    screenY: mouseEvent.screenY,
+                    clientX: mouseEvent.clientX,
+                    clientY: mouseEvent.clientY,
+                    pageX: mouseEvent.pageX,
+                    pageY: mouseEvent.pageY,
+                    radiusX: 2.5,
+                    radiusY: 2.5,
+                    rotationAngle: 0,
+                    force: 0.5
+                })],
             });
 
             /*
