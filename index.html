@@ -18,30 +18,111 @@
 <body>
     <div id="coordinates">Coordinates: X=0, Y=0</div>
     <script>
-        // Function to get mouse coordinates and output them to the console and screen
-        function logMouseCoordinates(event) {
-            var x = event.clientX;
-            var y = event.clientY;
-            console.log("Mouse coordinates: X=" + x + ", Y=" + y);
-            document.getElementById("coordinates").textContent = "Coordinates: X=" + x + ", Y=" + y;
+        let context = {
+            down: false,
+            touchIdSlotMap: new Map(),
+            touchSlots: [],
         }
 
-        // Function to get touch coordinates and output them to the console and screen
-        function logTouchCoordinates(event) {
-            var touch = event.touches[0];
-            var x = touch.clientX;
-            var y = touch.clientY;
-            console.log("Touch coordinates: X=" + x + ", Y=" + y);
-            document.getElementById("coordinates").textContent = "Coordinates: X=" + x + ", Y=" + y;
+        function onStartDrag(e) {
+            context.down = true;
+            sendEvent(context, e);
+        }
+
+        function onEndDrag(e) {
+            context.down = false;
+            sendEvent(context, e);
+        }
+
+        function onContinueDrag(e) {
+            if (context.down) {
+                sendEvent(context, e);
+            }
+        }
+
+        sendEvent(context, e) {
+            let eventType = e.type.substring(0, 5);
+            const display = e.target;
+            const scaling = 1.0;
+
+            let xArr    = [];
+            let yArr    = [];
+            let idArr   = [];
+            let slotArr = [];
+
+            if (eventType == 'touch') {
+                let changes = e.changedTouches;
+                let rect = e.target.getBoundingClientRect();
+                for (let i = 0; i < changes.length; i++) {
+                    xArr.push(changes[i].pageX - rect.left);
+                    yArr.push(changes[i].pageY - rect.top);
+                    
+                    if (context.touchIdSlotMap.has(changes[i].identifier)) {
+                        // Already slot exists
+                        let slot = context.touchIdSlotMap.get(changes[i].identifier);
+                        
+                        slotArr.push(slot);
+                        if (e.type == 'touchstart') {
+                            // error
+                            return;
+                        } else if (e.type == 'touchmove') {
+                            idArr.push(changes[i].identifier);
+                        } else if (e.type == 'touchend') {
+                            context.touchSlots[slot] = false;
+                            context.touchIdSlotMap.delete(changes[i].identifier);
+                            idArr.push(-1);
+                        }
+                    } else {
+                        // There is no slot
+
+                        if (e.type == 'touchstart') {
+                            let slot = -1;
+                            for (let j = 0; j < context.touchSlots.length; j++) {
+                                if (!context.touchSlots[j]) {
+                                    slot = j;
+                                    break;
+                                }
+                            }
+                                    
+                            if (slot == -1) {
+                                slot = context.touchSlots.length;
+                                context.touchSlots.push(true);
+                            }
+                                    
+                            slotArr.push(slot);
+                            context.touchSlots[slot] = true;
+                            context.touchIdSlotMap.set(changes[i].identifier, slot);
+                            idArr.push(changes[i].identifier);
+                        } else if (e.type == 'touchmove') {
+                            console.error('touchmove when no slot');
+                            return;
+                        } else if (e.type == 'touchend') {
+                            console.error('touchend when no slot');
+                            return;
+                        }
+                    }
+                }
+            }
+            
+            for (let i = 0; i < xArr.length; i++) {
+                xArr[i] = Math.trunc(xArr[i] * scaling);
+                yArr[i] = Math.trunc(yArr[i] * scaling);
+            }
+            
+            console.log({ idArr, xArr, yArr, down: context.down, slotArr });
         }
 
         // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
-            document.addEventListener("mousemove", logMouseCoordinates);
-            document.addEventListener("touchstart", logTouchCoordinates);
-            document.addEventListener("touchmove", logTouchCoordinates);
-            document.addEventListener("touchend", logTouchCoordinates);
-            document.addEventListener("touchcancel", logTouchCoordinates);
+            if (window.MouseEvent) {
+                document.addEventListener("mousedown", onStartDrag);
+                document.addEventListener("mousemove", onContinueDrag);
+                document.addEventListener("mouseup",   onEndDrag);
+            } else if (window.TouchEvent) {
+                document.addEventListener("touchstart", onStartDrag);
+                document.addEventListener("touchmove",  onContinueDrag);
+                document.addEventListener("touchend",   onEndDrag);
+            }
         });
     </script>
 </body>
