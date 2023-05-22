@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mouse and Touch Coordinates</title>
     <style>
-        #coordinates {
+        #console {
             position: fixed;
             top: 10px;
             left: 10px;
@@ -51,6 +51,7 @@
 
         function simulateTouchEvent(mouseEvent, touchEventType) {
             const touchEvent = new TouchEvent(touchEventType, {
+                type: touchEventType,
                 bubbles: true,
                 cancelable: true,
                 composed: true,
