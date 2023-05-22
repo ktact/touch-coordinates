@@ -108,7 +108,7 @@
             } else if (eventType == 'touch') {
                 let changes = e.changedTouches;
                 console.log(changes);
-                let rect = e.target.getBoundingClientRect()
+                let rect = { top: 0, left: 0 }; // e.target.getBoundingClientRect()
                 for (let i = 0; i < changes.length; i++) {
                     xArr.push(changes[i].pageX - rect.left);
                     yArr.push(changes[i].pageY - rect.top);
