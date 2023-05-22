@@ -46,6 +46,17 @@
             }
         }
 
+        function simulateTouchEvent(mouseEvent, touchEventType) {
+            const touchEvent = new TouchEvent(touchEventType, {
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
+            });
+            
+            mouseEvent.target.dispatchEvent(touchEvent);
+        }
+        
         function sendEvent(context, e) {
             let eventType = e.type.substring(0, 5);
             const display = e.target;
@@ -128,9 +139,15 @@
         // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
             if (window.MouseEvent) {
-                document.addEventListener("mousedown", onStartDrag);
-                document.addEventListener("mousemove", onContinueDrag);
-                document.addEventListener("mouseup",   onEndDrag);
+                document.addEventListener("mousedown", (e) => {
+                    simulateTouchEvent(e, 'touchstart');
+                });
+                document.addEventListener("mousemove", (e) => {
+                    simulateTouchEvent(e, 'touchmove');
+                });
+                document.addEventListener("mouseup",   (e) => {
+                    simulateTouchEvent(e, 'touchend');
+                });
             } else if (window.TouchEvent) {
                 document.addEventListener("touchstart", onStartDrag);
                 document.addEventListener("touchmove",  onContinueDrag);
