@@ -29,7 +29,7 @@
               bubbles: true,
               cancelable: true,
               composed: true,
-              touches: [{
+              touches: [new Touch({
                 identifier: 0,
                 target: event.target,
                 screenX: event.screenX,
@@ -42,7 +42,7 @@
                 radiusY: 0,
                 rotationAngle: 0,
                 force: 1
-              }]
+              })]
           });
 
           element.dispatchEvent(touchEvent);
