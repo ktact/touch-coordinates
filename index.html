@@ -50,12 +50,7 @@
         }
 
         function simulateTouchEvent(mouseEvent, touchEventType) {
-            const simulatedTouchEvent = new TouchEvent(touchEventType, {
-                bubbles: true,
-                cancelable: true,
-                composed: true,
-                detail: 1,
-                changedTouchs: [new Touch({
+            const touch = new Touch({
                     identifier: 0,
                     target: mouseEvent.target,
                     screenX: mouseEvent.screenX,
@@ -68,7 +63,14 @@
                     radiusY: 2.5,
                     rotationAngle: 0,
                     force: 0.5
-                })],
+                });
+
+            const simulatedTouchEvent = new TouchEvent(touchEventType, {
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                detail: 1,
+                changedTouches: [touch],
             });
 
             /*
