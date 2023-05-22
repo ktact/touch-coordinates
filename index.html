@@ -121,7 +121,7 @@
                 yArr[i] = Math.trunc(yArr[i] * scaling);
             }
             
-            document.getElementById("console").textContent += JSON.stringify({ idArr, xArr, yArr, down: context.down, slotArr }) + "<br>";
+            document.getElementById("console").textContent += (JSON.stringify({ idArr, xArr, yArr, down: context.down, slotArr }) + "<br/>)";
             console.log({ idArr, xArr, yArr, down: context.down, slotArr });
         }
 
