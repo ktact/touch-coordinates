@@ -54,10 +54,12 @@
                 changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
             });
             
+            console.log("dispatchEvent(" + touchEvent ")");
             mouseEvent.target.dispatchEvent(touchEvent);
         }
         
         function sendEvent(context, e) {
+            console.log("sendEvent");
             let eventType = e.type.substring(0, 5);
             const display = e.target;
             const scaling = 1.0;
