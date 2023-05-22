@@ -192,15 +192,7 @@
         // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
             if (window.MouseEvent) {
-                document.addEventListener("mousedown", (e) => {
-                    simulateTouchEvent(e, 'touchstart');
-                }, true);
-                document.addEventListener("mousemove", (e) => {
-                    simulateTouchEvent(e, 'touchmove');
-                }, true);
-                document.addEventListener("mouseup",   (e) => {
-                    simulateTouchEvent(e, 'touchend');
-                }, true);
+                
             } else if (window.TouchEvent) {
                 document.addEventListener("touchstart", onStartDrag);
                 document.addEventListener("touchmove",  onContinueDrag);
