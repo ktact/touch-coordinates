@@ -22,7 +22,7 @@
           const touchType = {
               'mousedown': 'touchstart',
               'mousemove': 'touchmove',
-              'mouseup': 'touchend'
+              'mouseup':   'touchend'
           };
 
           const touchEvent = new TouchEvent(touchType[event.type], {
@@ -45,7 +45,15 @@
               })]
           });
 
-          event.target.dispatchEvent(touchEvent);
+          //event.target.dispatchEvent(touchEvent);
+          if (event.type == 'mousedown') {
+              onStartDrag(touchEvent);
+          } else if (event.type == 'mousemove') {
+              onContinueDrag(touchEvent);
+          } else if (event.type == 'mouseup') {
+              onEndDrag(touchEvent);
+          }
+
           event.preventDefault();
         };
         let context = {
