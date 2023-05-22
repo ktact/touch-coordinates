@@ -54,7 +54,7 @@
                 changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
             });
             
-            console.log("dispatchEvent(" + touchEvent ")");
+            console.log("dispatchEvent(" + touchEvent + ")");
             mouseEvent.target.dispatchEvent(touchEvent);
         }
         
