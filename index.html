@@ -18,6 +18,36 @@
 <body>
     <div id="console"></div>
     <script>
+        const touchHandler = (event) => {
+          const touchType = {
+              'mousedown': 'touchstart',
+              'mousemove': 'touchmove',
+              'mouseup': 'touchend'
+          };
+
+          const touchEvent = new TouchEvent(touchType[event.type], {
+              bubbles: true,
+              cancelable: true,
+              composed: true,
+              touches: [{
+                identifier: 0,
+                target: element,
+                screenX: event.screenX,
+                screenY: event.screenY,
+                clientX: event.clientX,
+                clientY: event.clientY,
+                pageX: event.pageX,
+                pageY: event.pageY,
+                radiusX: 0,
+                radiusY: 0,
+                rotationAngle: 0,
+                force: 1
+              }]
+          });
+
+          element.dispatchEvent(touchEvent);
+          event.preventDefault();
+        };
         let context = {
             down: false,
             touchIdSlotMap: new Map(),
@@ -129,9 +159,9 @@
         // Add the mousemove, touchstart, touchmove, touchend, and touchcancel event listeners when the page is loaded
         window.addEventListener("DOMContentLoaded", function() {
             if (window.MouseEvent) {
-                document.addEventListener("mousedown", onStartDrag);
-                document.addEventListener("mousemove",  onContinueDrag);
-                document.addEventListener("mouseup",   onEndDrag);
+                document.addEventListener("mousedown", touchHandler, false);
+                document.addEventListener("mousemove", touchHandler, false);
+                document.addEventListener("mouseup",   touchHandler, false);
             } else if (window.TouchEvent) {
                 document.addEventListener("touchstart", onStartDrag);
                 document.addEventListener("touchmove",  onContinueDrag);
