@@ -69,6 +69,7 @@
                     var simulatedEvent = document.createEvent("MouseEvent");
 
                     simulatedEvent.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+                    console.log(simulatedEvent);
                     touch.target.dispatchEvent(simulatedEvent);
                     event.preventDefault();
                 };
@@ -125,7 +126,7 @@
                 idArr.push(-1);
             } else if (eventType == 'touch') {
                 let changes = e.changedTouches;
-                let rect = e.target.getBoundingClientRect() || changes[0].target;
+                let rect = e.target.getBoundingClientRect();
                 for (let i = 0; i < changes.length; i++) {
                     xArr.push(changes[i].pageX - rect.left);
                     yArr.push(changes[i].pageY - rect.top);
