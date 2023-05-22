@@ -25,6 +25,7 @@
         }
 
         function onStartDrag(e) {
+            console.log("onStartDrag");
             e.preventDefault();
 
             context.down = true;
@@ -32,6 +33,7 @@
         }
 
         function onEndDrag(e) {
+            console.log("onEndDrag");
             e.preventDefault();
 
             context.down = false;
@@ -39,6 +41,7 @@
         }
 
         function onContinueDrag(e) {
+            console.log("onContinueDrag");
             e.preventDefault();
 
             if (context.down) {
@@ -53,8 +56,7 @@
                 composed: true,
                 changedTouchs: [new Touch({ identifier: 0, target: mouseEvent.target, clientX: mouseEvent.clientX, clientY: mouseEvent.clientY })],
             });
-            
-            console.log("dispatchEvent(" + touchEvent + ")");
+
             mouseEvent.target.dispatchEvent(touchEvent);
         }
         
